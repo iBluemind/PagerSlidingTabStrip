@@ -43,10 +43,12 @@ import java.util.Locale;
 
 import com.astuetz.pagerslidingtabstrip.R;
 
+@SuppressLint("NewApi")
 public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 	public interface IconTabProvider {
 		public int getPageIconResId(int position);
+		public int getPageActivatedResId(int position);
 	}
 
 	// @formatter:off
@@ -185,7 +187,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	public void setOnPageChangeListener(OnPageChangeListener listener) {
 		this.delegatePageListener = listener;
 	}
-
+	
 	public void notifyDataSetChanged() {
 
 		tabsContainer.removeAllViews();
@@ -236,7 +238,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 	private void addIconTab(final int position, int resId) {
 
-		ImageButton tab = new ImageButton(getContext());
+		final ImageButton tab = new ImageButton(getContext());
 		tab.setImageResource(resId);
 
 		addTab(position, tab);
@@ -254,6 +256,10 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 		tab.setPadding(tabPadding, 0, tabPadding, 0);
 		tabsContainer.addView(tab, position, shouldExpand ? expandedTabLayoutParams : defaultTabLayoutParams);
+	}
+	
+	public ImageButton getIconTab(int position) {
+		return (ImageButton) tabsContainer.getChildAt(position);
 	}
 
 	private void updateTabStyles() {
